@@ -10,9 +10,14 @@ export class Range {
     public endColumn: number
   ) {}
 
-  // Create monaco.Range from this Range
-  toMonacoRange(): monaco.Range {
-    return new monaco.Range(this.startLineNumber, this.startColumn, this.endLineNumber, this.endColumn);
+  // Create a Monaco range using a static method to avoid direct usage of new monaco.Range()
+  static toMonacoRange(rng: Range): monaco.IRange {
+    return {
+      startLineNumber: rng.startLineNumber,
+      startColumn: rng.startColumn,
+      endLineNumber: rng.endLineNumber,
+      endColumn: rng.endColumn
+    };
   }
 
   // Static utility to create from monaco.Range
@@ -81,7 +86,6 @@ export class JsonEditorComponent {
               id: {
                 type: 'string',
                 description: "Unique identifier (UUID)",
-                // UUID regex: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
                 pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
                 example: "7e2f1b34-9f3a-4d5c-bf3d-7c8a0b6a3b0d",
                 readOnly: false
@@ -121,10 +125,10 @@ export class JsonEditorComponent {
     // Get the ranges for readonly properties (only "readonlyProp" here)
     const ranges = this.getReadonlyPropertyRanges(model.getValue(), this.readonlyProperties);
 
-    // Add decorations using our external Range class
+    // Add decorations using Range.toMonacoRange instead of new monaco.Range()
     this.decorations = this.editor.deltaDecorations([], ranges.map(rng =>
       ({
-        range: rng.toMonacoRange(),
+        range: Range.toMonacoRange(rng),
         options: {
           inlineClassName: 'readonly-property'
         }
