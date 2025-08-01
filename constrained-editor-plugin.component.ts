@@ -63,6 +63,7 @@ export class ConstrainedEditorPluginComponent implements OnDestroy {
       );
       matches.forEach((match) => {
         const { startLineNumber, endLineNumber } = match.range;
+        //range: [startLineNumber, 1, endLineNumber, 1],
         const range = new this.monaco.Range(
           startLineNumber,
           1,
