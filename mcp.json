@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "datagrid-component-mcp-server": {
+      "command": "node",
+      "args": ["D:\\Documents\\Angular\\angular-mcp\\mcp\\mcp\\datagrid-server\\build\\index.js"]
+    },
+    "ui-components-mcp-server": {
+      "command": "node",
+      "args": ["D:\\Documents\\Angular\\mcp-server-main\\dist\\server.js"]
+    }
+  }
+}
