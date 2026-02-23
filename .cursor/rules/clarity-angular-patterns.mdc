@@ -1,0 +1,43 @@
+---
+description: Angular + Clarity patterns for this project. Standalone components, imports, and layout.
+globs: "**/*.ts,**/*.html"
+alwaysApply: false
+---
+
+# Clarity + Angular patterns
+
+This project uses **Angular** with **standalone components** and **Clarity Design System**. The Angular app lives under the `angular/` directory.
+
+## Module and imports
+
+- Use **standalone components** (`standalone: true`). Do not rely on NgModules for feature code.
+- Import `ClarityModule` from `@clr/angular` in each component that uses Clarity templates:
+  `imports: [ClarityModule, CommonModule, ...]`
+- Use `CommonModule` (or `NgFor`, `NgIf` from `@angular/common`) for `*ngFor`, `*ngIf`, `date` pipe, etc.
+
+## Layout
+
+- Page-level layout uses Clarity layout: `main-container` → `header` → `content-container` → `content-area`.
+- Keep `<router-outlet>` where the app shell defines it (e.g. after the main container or inside content-area depending on routing).
+- Use Clarity utility classes (e.g. `btn`, `alert`, spacing) instead of one-off custom CSS when possible.
+
+## Forms
+
+- Prefer **reactive forms** (`FormGroup`, `FormControl`) with Clarity form components.
+- Use Clarity form containers (e.g. `clr-input-container`, `clr-select-container`) and directives (`clrInput`, `clrSelect`) so labels and validation display correctly.
+- Document any app-specific form validation or error message patterns in this rule or in a shared form doc.
+
+## Naming and structure
+
+- **Components:** Use kebab-case for selectors (e.g. `datagrid`, `user-list`). Place component files in a folder named like the feature (e.g. `datagrid/datagrid.component.ts`).
+- **Pages vs presentational:** Prefer “page” for route-level components that use the main layout; use presentational components for reusable pieces (e.g. datagrid, cards) that receive `@Input()` and emit `@Output()`.
+
+## Styles
+
+- Rely on Clarity’s CSS (`@clr/ui`). Avoid overriding Clarity variables or classes unless the project already defines a pattern (e.g. in `angular/src/styles.css` or a shared theme file).
+- Use Clarity design tokens / CSS variables when extending (e.g. colors, spacing) so the UI stays consistent.
+
+## Reference
+
+- Clarity: [clarity.design](https://clarity.design/)
+- Clarity Angular (ng-clarity): [github.com/vmware-clarity/ng-clarity](https://github.com/vmware-clarity/ng-clarity)
