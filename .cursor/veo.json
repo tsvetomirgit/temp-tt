@@ -1,0 +1,74 @@
+{
+  "model": "veo-3",
+  "duration_seconds": 12,
+  "aspect_ratio": "16:9",
+  "resolution": "4k",
+  "scene": {
+    "location": "modern urban business district",
+    "time_of_day": "daylight",
+    "environment_details": {
+      "buildings": "glass and steel corporate office buildings",
+      "visible_signage": [
+        {
+          "text": "",
+          "placement": "large sign on one of the background office buildings"
+        }
+      ],
+      "street": "clean city street with parked cars and light traffic"
+    }
+  },
+  "characters": [
+    {
+      "type": "male",
+      "age_range": "30-40",
+      "appearance": "business casual attire",
+      "expression": "thoughtful and slightly conflicted at first, then confident",
+      "actions": [
+        "stands between two cars looking at each one",
+        "pauses and considers both options",
+        "decides and walks toward the Ferrari",
+        "gets into the Ferrari",
+        "accelerates quickly and drives away with confidence"
+      ]
+    }
+  ],
+  "vehicles": [
+    {
+      "brand": "Fiat",
+      "color": "neutral color (white or silver)",
+      "position": "parked on the left side",
+      "custom_text": {
+        "text": "Figma AI",
+        "placement": "clearly visible on the side door"
+      }
+    },
+    {
+      "brand": "Ferrari",
+      "color": "red",
+      "position": "parked on the right side",
+      "custom_text": {
+        "text": "Cursor + Clarity",
+        "placement": "clearly visible on the side door"
+      }
+    }
+  ],
+  "camera": {
+    "style": "cinematic",
+    "shots": [
+      "wide establishing shot of the city business district",
+      "medium shot of the man standing between the two cars",
+      "close-up of his thoughtful face",
+      "tracking shot as he walks toward the Ferrari",
+      "dynamic low-angle shot as the Ferrari accelerates away"
+    ],
+    "movement": "smooth steadycam and subtle cinematic motion"
+  },
+  "mood": "motivational and decisive",
+  "audio": {
+    "music": "energetic cinematic background music",
+    "sound_effects": [
+      "city ambience",
+      "car engine revving loudly as Ferrari accelerates"
+    ]
+  }
+}
