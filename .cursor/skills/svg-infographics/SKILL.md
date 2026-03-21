@@ -279,7 +279,7 @@ Load the relevant reference file only if you need specific templates.
 
 ## Output Format
 
-Deliver the SVG as a file via `present_files`, or as an inline artifact if in Claude.ai. 
+Deliver the SVG as a file via `present_files`, or as an inline artifact if in Cursor.ai. 
 
 Always include:
 1. The complete SVG (no placeholders or `<!-- TODO -->` comments)  

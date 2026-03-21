@@ -15,7 +15,7 @@ description: >
 
 This skill adds **animated network signals and data flow effects** to SVG topology diagrams.
 Animations use pure SVG/CSS — no JavaScript dependencies. They work in all modern browsers
-and within Claude artifacts.
+and within Cursor artifacts.
 
 ---
 
