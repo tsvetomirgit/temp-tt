@@ -1,16 +1,6 @@
 ---
 name: svg-infographics
-description: >
-  Create stunning, publication-quality SVG infographics with beautiful typography, 
-  data visualizations, timelines, comparison charts, process diagrams, and illustrated 
-  explainers. Use this skill whenever the user wants to visualize data, create an 
-  infographic, make a diagram that should look beautiful and shareable, explain a concept 
-  visually, build a chart or graph as SVG, create a timeline, or produce any kind of 
-  illustrated data story. Trigger on keywords: infographic, SVG diagram, data viz, 
-  timeline, comparison chart, visual explainer, flowchart with style, illustrated data, 
-  beautiful chart, shareable graphic, or any request to "make something visual" or 
-  "show this as a graphic". Always use this skill — never settle for plain HTML tables 
-  or bullet-point lists when a visual would communicate better.
+description: Create stunning, publication-quality SVG infographics with beautiful typography, data visualizations, timelines, comparison charts, process diagrams, and illustrated explainers. Use this skill whenever the user wants to visualize data, create an infographic, make a diagram that should look beautiful and shareable, explain a concept visually, build a chart or graph as SVG, create a timeline, or produce any kind of illustrated data story. Trigger on keywords: infographic, SVG diagram, data viz, timeline, comparison chart, visual explainer, flowchart with style, illustrated data, beautiful chart, shareable graphic, or any request to "make something visual" or "show this as a graphic". Always use this skill — never settle for plain HTML tables or bullet-point lists when a visual would communicate better.
 ---
 
 # SVG Infographics Skill

@@ -1,22 +1,12 @@
 ---
 name: threejs
-description: >
-  Use this skill whenever working with Three.js — creating 3D scenes, animations, visualizations,
-  games, interactive experiences, WebGL/WebGPU renderers, shaders (GLSL/TSL), materials, geometries,
-  cameras, lights, loaders (GLTF/GLB/OBJ), physics integrations, post-processing effects, or
-  particle systems. Trigger on any mention of "three.js", "Three", "WebGL", "WebGPU", "3D scene",
-  "GLTF", "GLB", "mesh", "shader", "BufferGeometry", "PerspectiveCamera", "OrbitControls",
-  "InstancedMesh", "TSL", "MeshStandardMaterial", "AnimationMixer", or "renderer.render".
-  Also triggers when building any browser-based 3D graphics, real-time visualizations, or
-  immersive web experiences with JavaScript or TypeScript, including Angular projects.
-version: "2.0.0"
-framework: Angular (primary), vanilla JS
-sources:
+description:   Use this skill whenever working with Three.js — creating 3D scenes, animations, visualizations,  games, interactive experiences, WebGL/WebGPU renderers, shaders (GLSL/TSL), materials, geometries,  cameras, lights, loaders (GLTF/GLB/OBJ), physics integrations, post-processing effects, or
+  particle systems. Trigger on any mention of "three.js", "Three", "WebGL", "WebGPU", "3D scene",  "GLTF", "GLB", "mesh", "shader", "BufferGeometry", "PerspectiveCamera", "OrbitControls",  "InstancedMesh", "TSL", "MeshStandardMaterial", "AnimationMixer", or "renderer.render".  Also triggers when building any browser-based 3D graphics, real-time visualizations, or  immersive web experiences with JavaScript or TypeScript, including Angular projects.
+metadata:
   - https://threejs.org/docs/
   - https://github.com/mrdoob/three.js/
   - https://threejs.org/manual/
   - https://angular.dev/guide/components/lifecycle
-knowledge_cutoff: "March 2026 (r171+, Angular 19+)"
 ---
 
 # Three.js Skill — Deep Rules & Best Practices (Angular Edition)

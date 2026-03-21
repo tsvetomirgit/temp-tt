@@ -1,16 +1,7 @@
 ---
 name: svg-animation
-description: >
-  Use this skill whenever creating, editing, or improving SVG animations.
-  Trigger on any mention of "SVG animation", "animate element", "SMIL", "animateTransform",
-  "animateMotion", "SVG keyframes", "morphing SVG", "SVG path animation", "SVG loading spinner",
-  "SVG illustration animate", "SVG icon animation", "SVG hover effect", or requests to
-  "animate an SVG", "make an SVG move", "create a beautiful SVG", "animate a logo", or
-  "draw-on animation". Also trigger for any inline SVG that should come to life with motion,
-  looping effects, transitions, or storytelling through animation. Applies to both
-  SMIL-based (`<animate>`, `<animateTransform>`, `<animateMotion>`) and CSS-in-SVG animations.
-version: "1.0.0"
-sources:
+description: Use this skill whenever creating, editing, or improving SVG animations. Trigger on any mention of "SVG animation", "animate element", "SMIL", "animateTransform",  "animateMotion", "SVG keyframes", "morphing SVG", "SVG path animation", "SVG loading spinner",  "SVG illustration animate", "SVG icon animation", "SVG hover effect", or requests to "animate an SVG", "make an SVG move", "create a beautiful SVG", "animate a logo", or "draw-on animation". Also trigger for any inline SVG that should come to life with motion, looping effects, transitions, or storytelling through animation. Applies to both  SMIL-based (`<animate>`, `<animateTransform>`, `<animateMotion>`) and CSS-in-SVG animations.
+metadata:
   - https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/animate
   - https://css-tricks.com/guide-svg-animations-smil/
   - https://www.w3schools.com/graphics/svg_animation.asp

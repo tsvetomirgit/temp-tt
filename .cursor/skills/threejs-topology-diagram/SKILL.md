@@ -1,19 +1,9 @@
 ---
 name: threejs-topology-diagram
-description: >
-  Use this skill when building isometric 3D network/topology/architecture diagrams using
-  Three.js inside an Angular project. Triggers on: "topology diagram", "network diagram",
-  "architecture diagram", "infrastructure diagram", "isometric diagram", "3D network map",
-  "node graph", "system diagram", "cloud architecture diagram", "data flow diagram",
-  "blockchain diagram", "IT infrastructure", "isometric nodes", "connected nodes",
-  "diagram with arrows", "flow diagram 3D". Always combine with the threejs skill for
-  Angular integration patterns (NgZone, AfterViewInit, OnDestroy, forceContextLoss).
-depends_on: threejs (Angular Edition)
-version: "1.0.0"
-visual_reference: "Isometric topology diagrams — dark navy platform nodes, connecting
+description:   Use this skill when building isometric 3D network/topology/architecture diagrams using  Three.js inside an Angular project. Triggers on: "topology diagram", "network diagram",  "architecture diagram", "infrastructure diagram", "isometric diagram", "3D network map",  "node graph", "system diagram", "cloud architecture diagram", "data flow diagram",  "blockchain diagram", "IT infrastructure", "isometric nodes", "connected nodes",  "diagram with arrows", "flow diagram 3D". Always combine with the threejs skill for  Angular integration patterns (NgZone, AfterViewInit, OnDestroy, forceContextLoss).
+metadata: "Isometric topology diagrams — dark navy platform nodes, connecting
   arrows, floating icons above platforms, gold/orange accent coins/highlights,
   white background, orthographic isometric camera"
-knowledge_cutoff: "March 2026"
 ---
 
 # Three.js Isometric Topology Diagram Skill

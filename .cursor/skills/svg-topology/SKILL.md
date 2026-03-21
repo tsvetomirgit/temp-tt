@@ -1,14 +1,6 @@
 ---
 name: svg-topology
-description: >
-  Create beautiful isometric SVG topology diagrams — network maps, infrastructure diagrams,
-  system architecture, cloud topology, blockchain/data flow, and any technical diagram with
-  connected nodes. Use this skill whenever the user asks to draw, design, visualize, or
-  diagram: networks, servers, cloud infrastructure, system architecture, data pipelines,
-  blockchain flows, IoT topology, office/campus maps, or any set of connected components.
-  Trigger on keywords like: topology, network diagram, infrastructure diagram, architecture
-  diagram, SVG diagram, isometric diagram, system map, connection map. Always use this skill
-  when visuals would communicate structure better than words — don't just describe, DRAW IT.
+description:  Create beautiful isometric SVG topology diagrams — network maps, infrastructure diagrams, system architecture, cloud topology, blockchain/data flow, and any technical diagram with  connected nodes. Use this skill whenever the user asks to draw, design, visualize, or  diagram: networks, servers, cloud infrastructure, system architecture, data pipelines,  blockchain flows, IoT topology, office/campus maps, or any set of connected components.  Trigger on keywords like: topology, network diagram, infrastructure diagram, architecture  diagram, SVG diagram, isometric diagram, system map, connection map. Always use this skill  when visuals would communicate structure better than words — don't just describe, DRAW IT.
 ---
 
 # SVG Topology Diagram Skill

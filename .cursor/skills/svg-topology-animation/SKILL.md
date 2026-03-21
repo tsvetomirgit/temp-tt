@@ -1,14 +1,6 @@
 ---
 name: svg-topology-animation
-description: >
-  Add animated network signals, data flow pulses, and connection animations to SVG topology
-  diagrams. Use this skill whenever the user wants to animate a topology diagram, show data
-  flowing between nodes, visualize network traffic, add moving signals along connections,
-  or make any static topology diagram "come alive". Trigger on: "animate", "animated diagram",
-  "show data flow", "network signals", "moving connections", "pulse", "flowing lines",
-  "traffic animation", or when the user asks to add motion to a topology. Always combine
-  with the svg-topology skill for new diagrams. Also use when the user says "I want to see
-  animated network signals between connected objects."
+description: Add animated network signals, data flow pulses, and connection animations to SVG topology diagrams. Use this skill whenever the user wants to animate a topology diagram, show data flowing between nodes, visualize network traffic, add moving signals along connections, or make any static topology diagram "come alive". Trigger on: "animate", "animated diagram",   "show data flow", "network signals", "moving connections", "pulse", "flowing lines",  "traffic animation", or when the user asks to add motion to a topology. Always combine  with the svg-topology skill for new diagrams. Also use when the user says "I want to see  animated network signals between connected objects."
 ---
 
 # SVG Topology Animation Skill
