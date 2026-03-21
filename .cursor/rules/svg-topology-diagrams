@@ -1,0 +1,193 @@
+# Claude Rules: SVG Topology Diagrams
+
+Rules and conventions for generating beautiful SVG topology and architecture diagrams.
+These rules apply whenever creating any network, infrastructure, architecture, or
+flow diagram in SVG format.
+
+---
+
+## Skill Loading
+
+**Always load both skills** when creating or animating topology diagrams:
+
+1. Read `/path/to/skills/svg-topology/SKILL.md` for design, geometry, and structure rules
+2. Read `/path/to/skills/svg-topology-animation/SKILL.md` for animation patterns
+
+If the user asks for animation, or says "animated", "show signals", "show data flow",
+or anything implying motion — **always apply the animation skill on top of the base skill**.
+
+---
+
+## Core Principles
+
+### 1. Always Draw, Never Describe
+When the user provides a topology to visualize — even a short list of components —
+**create the SVG diagram immediately**. Never respond with "here is how you could draw it"
+or bullet-point descriptions of what the diagram would look like. Generate the visual.
+
+### 2. Isometric by Default
+All topology diagrams use the **isometric 3D tile style** (three-face hexagonal platform)
+unless the user explicitly asks for flat/2D. This is the primary visual identity.
+
+### 3. One Diagram = One SVG
+Never split a topology across multiple SVGs unless explicitly requested. Use `viewBox`
+scaling to fit all content. Minimum padding: 60px on all sides.
+
+### 4. Layering Order Is Non-Negotiable
+Always render layers in this strict order:
+```
+1. <defs>        — filters, markers, symbols
+2. #zones        — group background areas
+3. #connections  — static connection paths (with IDs for animation)
+4. #signals      — animated dots/pulses on connection paths
+5. #nodes        — tile geometry + icons + labels
+6. #overlays     — legend, title, annotations
+```
+Animated signal dots MUST be between connection lines and node tiles.
+
+### 5. Performance Budget
+Limit total `<animate>` / `<animateMotion>` elements to **20 maximum** per diagram.
+For complex diagrams with many connections, animate only the primary/highlighted paths.
+
+---
+
+## Visual Identity Rules
+
+### Tiles
+- Every node uses the **3-polygon isometric tile** (top + right + left face)
+- Tile sizes: small=60px wide, medium=90px, large=120px (for hub nodes)
+- Hub/central nodes get the large tile; leaf nodes get small/medium
+- Drop shadow filter on every tile `<g>`
+
+### Colors — No Substitutions
+Use only the defined palette. Never use flat grey, generic blue, or white tiles.
+
+| Role | Color |
+|---|---|
+| Tile top | `#1E3A5F` |
+| Tile right | `#152C4A` |
+| Tile left | `#0D1E30` |
+| Primary flow | `#F5A623` (gold) |
+| Secondary flow | `#4A9EFF` (blue) |
+| Data/analytics | `#00D4FF` (cyan) |
+| Alert/security | `#E63946` (red) |
+| IoT/wireless | `#9F7AEA` (purple) |
+| Healthy | `#38A169` (green) |
+| Background | `#F8F9FC` |
+
+### Icons
+- Always place an icon on the top face of each tile
+- Icons are 28–36px, centered horizontally, vertically offset by -8 to -14px
+- Use the icon library from the skill; for unknown devices, use a generic box + first letter
+
+### Labels
+- Every node has a label — never leave unlabeled tiles
+- Primary label: `font-size=11, font-weight=600, fill=#1A2744`
+- Secondary label (IP/role): `font-size=9, fill=#5A7A9F`
+- Position labels 10–12px below the bottom face of the tile
+
+---
+
+## Connection Rules
+
+### Line Hierarchy
+Always use this visual hierarchy to show importance:
+1. **Gold solid + arrowhead** = primary data flow / main path
+2. **Blue dashed + arrowhead** = secondary / control flow
+3. **Red dotted** = blocked / alert / error path
+4. **Grey solid no arrow** = passive link / physical cable only
+
+### Routing
+- Route connections to **tile edges**, not tile centers
+- For overlapping paths, use slight bezier curves to visually separate them
+- Never route a line **through** a node tile — always around it
+
+### Arrows
+- All directional connections must have an arrowhead
+- Use matching color arrowheads (gold for gold lines, blue for blue lines)
+- Undirected/passive connections have no arrowhead
+
+---
+
+## Animation Rules (when animations are requested)
+
+### Signal Dot Behavior
+- Signal dots are **small filled circles** (r=3–4px) that travel along connection paths
+- Color matches the connection line
+- Multiple signals on one path: stagger `begin` offsets by `dur/2`
+- Max 3 signals per connection
+
+### When to Animate What
+| User request | Animation to apply |
+|---|---|
+| "show network traffic" | Signal pulses on all active connections |
+| "show data flow" | Packet burst on primary (gold) connections |
+| "show active connections" | Marching ants on secondary connections |
+| "show broadcast/multicast" | Ring ripple on source node |
+| "show status" | LED blink on all nodes |
+| "show high traffic" | Packet burst (3 signals, 0.25s offset) |
+| "show blocked/denied" | Red rapid signal + red glow on target node |
+
+### Stagger Everything
+Never allow multiple same-type animations to fire in sync. Always offset with `begin="Ns"`.
+This makes the diagram feel organic rather than mechanical.
+
+---
+
+## Layout Guidelines
+
+### Spatial Balance
+- Place hub/central nodes in the center of the diagram
+- Client/edge nodes radiate outward
+- Group logically related nodes close together
+- Leave visible "breathing space" between node groups
+
+### Zone Backgrounds
+When nodes belong to logical groups (cloud, on-prem, DMZ, edge):
+- Draw a rounded-rect zone background BEFORE the node layer
+- Use `fill` opacity of ~0.04–0.08 over the zone color (very subtle)
+- Dashed stroke border matching zone color at opacity 0.5–0.7
+- Zone label in small uppercase, same color as border
+
+### Sizing the ViewBox
+- For 4–8 nodes: `viewBox="0 0 800 500"`
+- For 9–16 nodes: `viewBox="0 0 1000 650"`
+- For 17–30 nodes: `viewBox="0 0 1200 800"`
+
+---
+
+## Legend Requirements
+
+Add a legend whenever:
+- More than 2 connection types appear in the diagram
+- Multiple zone types appear
+
+Legend placement: bottom-left corner, small font (9px), 16px line spacing.
+Show each connection type with a 30px sample line + label.
+
+---
+
+## Strict Prohibitions
+
+- ❌ Never use plain rectangles as nodes (must be isometric tiles)
+- ❌ Never use default browser blue (#0000ff) or grey (#888) as accent colors
+- ❌ Never place animated signal dots above node tiles
+- ❌ Never route connection lines through node bodies
+- ❌ Never output a topology without labels on every node
+- ❌ Never exceed 20 animate elements per SVG (performance)
+- ❌ Never use flat/2D arrows unless user explicitly requests it
+- ❌ Never omit the drop-shadow filter from tile groups
+
+---
+
+## Self-Check Before Finalizing
+
+Ask internally before output:
+- Are all tiles 3-face isometric?
+- Are drop shadows applied?
+- Are signals drawn between connections and nodes layers?
+- Do all connections have correct arrowheads?
+- Is every node labeled?
+- Are colors consistent with the palette?
+- Is the viewBox correctly sized with padding?
+- If animated: are signals staggered? Is total animation count ≤ 20?
