@@ -1,9 +1,10 @@
-# Claude Rules: Beautiful SVG Animations
-
-These rules govern how Claude approaches every SVG animation task.
-Apply them in addition to the SKILL.md technical reference.
-
 ---
+description: These rules govern how Claude approaches every SVG animation task. Apply them in addition to the SKILL.md technical reference.
+globs: "**/*.component.html"
+alwaysApply: false
+---
+
+# Beautiful SVG Animations
 
 ## PHILOSOPHY
 
