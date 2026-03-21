@@ -1,10 +1,12 @@
-# SVG Topology Diagrams
-
-Rules and conventions for generating beautiful SVG topology and architecture diagrams.
+---
+description: Rules and conventions for generating beautiful SVG topology and architecture diagrams.
 These rules apply whenever creating any network, infrastructure, architecture, or
 flow diagram in SVG format.
-
+globs: "**/*.component.html"
+alwaysApply: false
 ---
+
+# SVG Topology Diagrams
 
 ## Skill Loading
 
