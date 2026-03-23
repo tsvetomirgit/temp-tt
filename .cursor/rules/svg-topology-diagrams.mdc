@@ -48,8 +48,54 @@ Always render layers in this strict order:
 Animated signal dots MUST be between connection lines and node tiles.
 
 ### 5. Performance Budget
-Limit total `<animate>` / `<animateMotion>` elements to **20 maximum** per diagram.
-For complex diagrams with many connections, animate only the primary/highlighted paths.
+Count **both** `<animate>` (e.g. stroke-dashoffset, opacity) and `<animateMotion>` toward one cap:
+**20 maximum** per diagram. For dense topologies, animate only primary paths or use marching ants
+on dashed lines only.
+
+---
+
+## Animation Implementation (SMIL)
+
+Use **pure SVG** (`<animate>`, `<animateMotion>`, `<mpath>`) — no JavaScript. Keep animated
+layers between `#connections` and `#nodes`.
+
+### Required setup
+
+1. Give every connection `<path>` that will carry a signal a stable **`id`** (e.g. `conn-edge-dmz`).
+2. After the `#connections` group, add `<g id="signals" pointer-events="none">` so dots do not
+   intercept pointer events.
+3. For each path, add one **signal dot** (small `<circle>`) that follows the path:
+
+```svg
+<circle r="3.5" fill="#1E3A5F" opacity="0.92">
+  <animateMotion dur="2.1s" begin="0.35s" repeatCount="indefinite" rotate="auto">
+    <mpath href="#conn-edge-dmz"/>
+  </animateMotion>
+</circle>
+```
+
+- **`rotate="auto"`** keeps the dot aligned with the path tangent.
+- **`begin`** must vary per path (stagger 0.2–0.4s) so pulses do not sync.
+- **Fill** must match the connection stroke color (navy / gold / accent).
+
+### Marching ants on dashed links
+
+For **dashed** strokes, add a child `<animate>` on the same `<path>`:
+
+```svg
+<path id="conn-app-db" d="..." stroke="#F5A623" stroke-dasharray="8 5" ...>
+  <animate attributeName="stroke-dashoffset" from="0" to="-14" dur="1.1s" repeatCount="indefinite"/>
+</path>
+```
+
+Use a negative `to` equal to the dash + gap sum so the pattern scrolls smoothly. Stagger `begin`
+on different dashed paths.
+
+### Budget checklist
+
+- Prefer **one dot per link** + optional **marching ants** on dashed links; drop extra dots before
+  exceeding 20 total `animate` + `animateMotion` elements.
+- **Never** put `#signals` after `#nodes` — dots must sit under tiles.
 
 ---
 
@@ -87,6 +133,13 @@ Use only the defined palette. Never use flat grey, generic blue, or white tiles.
 - Primary label: `font-size=11, font-weight=600, fill=#1A2744`
 - Secondary label (IP/role): `font-size=9, fill=#5A7A9F`
 - Position labels 10–12px below the bottom face of the tile
+- **Legibility (required):** connection lines and animated signals are drawn **under** `#nodes`,
+  but strokes still show through **transparent** areas — including the title band under each
+  tile. Use an **opaque rounded “label plate”** (`<rect>` with fill matching the diagram
+  background, light stroke, `rx≈4`) **after** the tile+icon, **before** `<text>`. Apply
+  **`filter="url(#tile-shadow)"` only** to the inner group that contains the three tile faces
+  and icon — **not** to the label plate (avoids muddy shadow on the pill)
+- Legends/titles that could be crossed by links: add a **backing rect** behind sample lines + copy
 
 ---
 
@@ -100,8 +153,12 @@ Always use this visual hierarchy to show importance:
 4. **Grey solid no arrow** = passive link / physical cable only
 
 ### Routing
-- Route connections to **tile edges**, not tile centers
-- For overlapping paths, use slight bezier curves to visually separate them
+- **Default:** **orthogonal (Manhattan)** links — each `<path>` uses only **horizontal and vertical**
+  segments in SVG space (`M` + `L`, no diagonals or `C` unless the user asks for curved/organic links)
+- Route connections to **tile edges**, not tile centers; place waypoints on shared **x** or **y**
+  “bus” lines so elbows form **L** / **Z** shapes
+- For overlapping paths, **offset** parallel segments (different corridor `x` or `y`) instead of
+  stacking identical polylines
 - Never route a line **through** a node tile — always around it
 
 ### Arrows
@@ -166,6 +223,8 @@ Add a legend whenever:
 
 Legend placement: bottom-left corner, small font (9px), 16px line spacing.
 Show each connection type with a 30px sample line + label.
+Use an **opaque background** (single wide rounded rect or per-row plates) so no link segment
+passes over unreadable legend text.
 
 ---
 
@@ -176,7 +235,9 @@ Show each connection type with a 30px sample line + label.
 - ❌ Never place animated signal dots above node tiles
 - ❌ Never route connection lines through node bodies
 - ❌ Never output a topology without labels on every node
-- ❌ Never exceed 20 animate elements per SVG (performance)
+- ❌ Never use **bare** label `<text>` with no opaque plate when links or signals could cross
+      the label band (presentation diagrams)
+- ❌ Never exceed 20 combined `<animate>` + `<animateMotion>` elements per SVG (performance)
 - ❌ Never use flat/2D arrows unless user explicitly requests it
 - ❌ Never omit the drop-shadow filter from tile groups
 
@@ -189,7 +250,7 @@ Ask internally before output:
 - Are drop shadows applied?
 - Are signals drawn between connections and nodes layers?
 - Do all connections have correct arrowheads?
-- Is every node labeled?
+- Is every node labeled? Does each label have a **plate** so strokes/dots do not obscure text?
 - Are colors consistent with the palette?
 - Is the viewBox correctly sized with padding?
 - If animated: are signals staggered? Is total animation count ≤ 20?

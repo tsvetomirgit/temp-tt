@@ -20,7 +20,7 @@ The target aesthetic (derived from reference images):
 | **Projection** | True isometric (30° / `skewX(-30) scaleY(0.866)` or cabinet projection) |
 | **Node bases** | 3D platform "tiles" — dark navy top face, medium navy right face, deep navy left face |
 | **Accent colors** | Gold/amber `#F5A623`, electric blue `#4A9EFF`, cyan `#00D4FF`, red `#E63946` |
-| **Connections** | Directional arrows with dashed or solid paths; gold = primary flow, blue = secondary |
+| **Connections** | Directional arrows; **orthogonal (Manhattan) polylines** along SVG **x/y** by default — only horizontal + vertical segments; dashed/solid by flow type |
 | **Icons** | Flat or slightly 3D glyphs on top face of each tile (server rack, laptop, cloud, shield…) |
 | **Labels** | Clean sans-serif below/beside each node; white or dark on light backgrounds |
 | **Background** | White or very light grey (`#F8F9FC`); no heavy gradients |
@@ -147,22 +147,56 @@ Use `<symbol>` + `<use>` for reusable icons. Place each icon centered over the t
 
 ## Connection Lines
 
-### Connection Styles
+### Orthogonal routing (default)
+
+For presentation-ready network and architecture diagrams, model links as **axis-aligned**
+polylines in SVG user space: segments must be purely **horizontal** (constant `y`) or
+**vertical** (constant `x`). This is often called **Manhattan** or **rectangular** routing.
+
+- Use a single `<path>` with **`M`** (move) + one or more **`L`** (line) commands — no
+  diagonal segments unless the user explicitly asks for curved or “shortest chord” links.
+- Typical shapes: **L** (one elbow), **Z** or **U** (two or more elbows) when avoiding nodes.
+- Pick **waypoints** (shared `x` or `y` values) so lines run in “channels” between tiles.
+- End the path at the **destination** so `marker-end` aligns with the **last segment**
+  (arrow points along the final horizontal or vertical run).
+- Use `stroke-linecap="round"` and `stroke-linejoin="round"` unless a sharper corner is required.
 
 ```svg
-<!-- Primary flow: solid gold arrow -->
-<path d="M x1,y1 C cx1,cy1 cx2,cy2 x2,y2"
+<!-- L-shape: go horizontal first, then vertical (arrow follows last segment) -->
+<path id="conn-a-b"
+      d="M 520 118 L 320 118 L 320 248"
+      fill="none" stroke="#1E3A5F" stroke-width="2.2"
+      stroke-linecap="round" stroke-linejoin="round"
+      marker-end="url(#arrow-navy)"/>
+
+<!-- Z-shape: two bends via a shared corridor y = 360 -->
+<path id="conn-c-d"
+      d="M 450 398 L 450 360 L 650 360 L 650 308"
+      fill="none" stroke="#F5A623" stroke-width="2"
+      stroke-dasharray="8 5"
+      marker-end="url(#arrow-orange)"/>
+```
+
+**When to use curves:** Cubic Béziers (`C`) are optional for sketch-style or organic maps.
+If the user asks for **rectangular**, **orthogonal**, **grid**, **Manhattan**, or **axis-aligned**
+links, **do not** use diagonal single-segment or Bézier shortcuts — use polylines only.
+
+### Connection Styles (stroke semantics)
+
+```svg
+<!-- Primary flow: solid gold arrow (orthogonal example) -->
+<path d="M x1 y1 L xm y1 L xm y2 L x2 y2"
       fill="none" stroke="#F5A623" stroke-width="2"
       marker-end="url(#arrow-gold)"/>
 
 <!-- Secondary: dashed blue -->
-<path d="M x1,y1 L x2,y2"
+<path d="M x1 y1 L x2 y1 L x2 y2"
       fill="none" stroke="#4A9EFF" stroke-width="1.5"
       stroke-dasharray="6,4"
       marker-end="url(#arrow-blue)"/>
 
 <!-- Dotted red (warning/blocked) -->
-<path d="M x1,y1 L x2,y2"
+<path d="M x1 y1 L x2 y1 L x2 y2"
       fill="none" stroke="#E63946" stroke-width="1.5"
       stroke-dasharray="3,4" opacity="0.8"/>
 ```
@@ -186,12 +220,18 @@ Use `<symbol>` + `<use>` for reusable icons. Place each icon centered over the t
 </defs>
 ```
 
-### Routing Rules for Isometric Connections
+### Routing rules (orthogonal)
 
-- **Same row**: horizontal straight line at mid-height of tiles
-- **Different rows**: use cubic bezier with control points offset by ±40px Y
-- **Long distance**: add an intermediate waypoint node or elbow
-- Always route lines to the **edge of tiles**, not through the center
+- **Same row or column**: a single horizontal or vertical segment if endpoints align; otherwise
+  use one elbow (**L**): e.g. horizontal to shared `x`, then vertical to target `y` (or the reverse).
+- **Different quadrants**: use **two or more segments** with waypoints on “bus” lines
+  (shared `y` or `x`) so paths stay in corridors and do not cut through tile bodies.
+- **Long distance**: add intermediate points so each segment remains axis-aligned; prefer
+  routing **around** dense groups rather than one long diagonal.
+- Attach to the **edge** of the logical node position (slightly inset from tile centers) so
+  links do not originate from the middle of a platform.
+- **Overlap**: offset parallel links by 8–16px on the shared bus (different `y` or `x`) so
+  strokes do not sit on top of each other.
 
 ---
 
@@ -206,25 +246,64 @@ Apply to all tile groups for lift effect:
   </filter>
 </defs>
 
-<!-- Usage -->
+<!-- Usage: wrap only the tile + icon — not the label plate (see Label styling section) -->
 <g filter="url(#tile-shadow)">
-  <!-- tile polygons here -->
+  <!-- tile polygons + icon -->
 </g>
 ```
 
 ---
 
-## Label Styling
+## Label styling and legibility (required)
+
+Labels sit **below** the isometric tile. Connection lines are drawn in a layer **under** the
+whole `#nodes` group, but strokes still show **through** transparent areas — including the
+band where titles sit — unless you block them.
+
+### Rule: opaque “label plate” behind every primary label
+
+For each node, **do not** put bare `<text>` over empty background. Add a **rounded rectangle**
+behind the label (and behind any sublabel) so links and animated signal dots cannot obscure
+typography:
+
+- **Fill:** diagram background color, typically `#FFFFFF` (or match `svg` / canvas background).
+- **Stroke:** very light border, e.g. `#E2E8F0` at `0.75px`, for a subtle pill edge.
+- **Geometry:** `rx` / `ry` around `4–5`; width tuned per string (longer names need wider rects);
+  height ~`16–20px`; position so the box wraps the cap height and descenders (baseline ~`y=56`
+  for `font-size=11`).
+- **Paint order:** draw the rect **after** the tile + icon, **before** the `<text>` so the
+  text paints on top.
+
+### Split tile shadow from labels
+
+Apply **`filter="url(#tile-shadow)"` only** to the subgraph that contains the three tile
+polygons and the icon — **not** to the label plate. If the outer node `<g>` has the filter,
+the plate inherits a drop shadow and looks muddy. Structure:
 
 ```svg
-<!-- Node label below tile -->
-<text x="0" y="labelY" text-anchor="middle"
-      font-family="'Segoe UI', system-ui, sans-serif"
-      font-size="11" font-weight="600"
-      fill="#1A2744" letter-spacing="0.3">
-  Node Name
-</text>
-<!-- Optional sublabel (IP, role, etc.) -->
+<g transform="translate(cx, cy)">
+  <g filter="url(#tile-shadow)">
+    <!-- top / right / left faces, badges, icon -->
+  </g>
+  <rect x="-48" y="43" width="96" height="18" rx="4"
+        fill="#ffffff" stroke="#e2e8f0" stroke-width="0.75"/>
+  <text x="0" y="56" text-anchor="middle"
+        font-family="'Segoe UI', system-ui, sans-serif"
+        font-size="11" font-weight="600" fill="#1A2744">
+    Node Name
+  </text>
+</g>
+```
+
+### Legend and titles
+
+If the legend or title sits where links could pass, use the same idea: a **rounded rect**
+(or full-width legend bar) behind sample lines + text so nothing crosses readable copy.
+
+### Typography (unchanged)
+
+```svg
+<!-- Optional sublabel (IP, role, etc.) — extend plate height or add a second rect -->
 <text x="0" y="labelY+14" text-anchor="middle"
       font-family="'Segoe UI', system-ui, sans-serif"
       font-size="9" fill="#5A7A9F">
@@ -249,17 +328,20 @@ Apply to all tile groups for lift effect:
     <!-- paths here -->
   </g>
 
-  <!-- LAYER 2: Nodes (tiles + icons + labels) -->
+  <!-- LAYER 2: Signals (optional — animated dots; between connections and nodes) -->
+  <g id="signals" pointer-events="none">...</g>
+
+  <!-- LAYER 3: Nodes — per node: tile+icon (with shadow), then label plate rect, then text -->
   <g id="nodes">
-    <!-- Each node is a <g> with tile polygons + <use> icon + <text> label -->
+    <!-- Each node: inner <g filter> for tile; then <rect> label plate; then <text> -->
   </g>
 
-  <!-- LAYER 3: Legend (optional, bottom-left) -->
+  <!-- LAYER 4: Legend (optional; use opaque backing behind line swatches + text) -->
   <g id="legend" transform="translate(20, 520)">
     <!-- small colored lines + labels -->
   </g>
 
-  <!-- LAYER 4: Title -->
+  <!-- LAYER 5: Title -->
   <text x="450" y="32" text-anchor="middle"
         font-size="18" font-weight="700" fill="#1A2744">
     Diagram Title
@@ -271,24 +353,23 @@ Apply to all tile groups for lift effect:
 
 ## Node Macro (reusable pattern)
 
-Use this pattern for every node — just change position and icon:
+Use this pattern for every node — just change position, icon, and label plate width:
 
 ```svg
 <!-- Node: "Web Server" at SVG position (340, 180) -->
-<g transform="translate(340, 180)" filter="url(#tile-shadow)">
-  <!-- Tile top face -->
-  <polygon points="0,-28  45,0  0,28  -45,0" fill="#1E3A5F"/>
-  <!-- Tile right face -->
-  <polygon points="45,0  45,18  0,46  0,28" fill="#152C4A"/>
-  <!-- Tile left face -->
-  <polygon points="0,28  0,46  -45,18  -45,0" fill="#0D1E30"/>
-  <!-- Icon on top face -->
-  <use href="#icon-server" x="0" y="-6" width="32" height="32"/>
-  <!-- Label -->
-  <text x="0" y="58" text-anchor="middle"
+<g transform="translate(340, 180)">
+  <g filter="url(#tile-shadow)">
+    <polygon points="0,-28  45,0  0,28  -45,0" fill="#1E3A5F"/>
+    <polygon points="45,0  45,18  0,46  0,28" fill="#152C4A"/>
+    <polygon points="0,28  0,46  -45,18  -45,0" fill="#0D1E30"/>
+    <use href="#icon-server" x="0" y="-6" width="32" height="32"/>
+  </g>
+  <rect x="-52" y="43" width="104" height="18" rx="4"
+        fill="#ffffff" stroke="#e2e8f0" stroke-width="0.75"/>
+  <text x="0" y="56" text-anchor="middle"
         font-size="11" font-weight="600" fill="#1A2744">Web Server</text>
-  <text x="0" y="70" text-anchor="middle"
-        font-size="9" fill="#5A7A9F">10.0.1.5</text>
+  <!-- Optional: taller plate or second row for IP -->
+  <text x="0" y="72" text-anchor="middle" font-size="9" fill="#5A7A9F">10.0.1.5</text>
 </g>
 ```
 
@@ -340,12 +421,17 @@ When given a topology to draw:
 2. **Classify connections**: Primary flow (gold), secondary (blue), alerts (red)
 3. **Design grid layout**: Sketch isometric grid placement — hub nodes center, leaves around
 4. **Map to SVG coords**: Use `isoPos()` formula or manually place at visually balanced positions
-5. **Write SVG structure**: defs → connections → nodes → labels → legend
+5. **Write SVG structure**: defs → connections → (optional `#signals`) → nodes (tile + label
+   plate + text) → legend with backing
 6. **Apply consistent tile sizes**: larger tiles for more important/central nodes
 7. **Add icon**: pick closest icon from library; if unknown, use a generic box with a letter
-8. **Route connections**: cubic bezier for cross-row, straight for same-row
-9. **Add legend** if >2 connection types
-10. **Review balance**: ensure no cluster of overlapping nodes; adjust positions
+8. **Route connections**: orthogonal polylines (`M` + `L` only) unless the user asks for curves;
+   choose waypoints so segments follow SVG **x** and **y** axes
+9. **Add legend** if >2 connection types; place an **opaque rect** behind swatches + text if
+   links could cross the legend band
+10. **Label legibility**: every node has a **label plate** (`<rect>`) under primary text;
+    `tile-shadow` applies **only** to the tile+icon group, not the plate
+11. **Review balance**: ensure no cluster of overlapping nodes; adjust positions
 
 ---
 
@@ -354,12 +440,15 @@ When given a topology to draw:
 Before outputting the final SVG:
 
 - [ ] All tiles use 3-face isometric construction (top + right + left)
-- [ ] Drop shadow applied to all tile `<g>` elements
+- [ ] Drop shadow applied **only** to the tile+icon subgraph (not the label plate)
+- [ ] **Label plates:** opaque rounded `<rect>` behind each primary label (and sublabels as
+      needed) so connection lines and signal dots never obscure text
 - [ ] Connection lines drawn in layer BELOW nodes
 - [ ] Arrowheads use matching color to their line
-- [ ] Labels are readable (min 10px, dark on light bg)
+- [ ] Labels are readable (min 10px, dark on light bg); legend/title backed if links cross them
 - [ ] Icon is visible and correctly scaled on top face
-- [ ] Connections routed around tiles, not through them
+- [ ] Connections routed around tiles, not through them; default to **orthogonal** segments
+      (horizontal + vertical), not diagonals or Béziers unless requested
 - [ ] Color palette is consistent with the palette table above
 - [ ] viewBox sized appropriately (allow 60px padding all sides)
 - [ ] Legend present if multiple connection types used
