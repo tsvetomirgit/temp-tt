@@ -28,11 +28,16 @@ The primary animation is a **small dot/packet that travels along a `<path>`** us
 
 ### Basic Signal Pulse
 
+Prefer **orthogonal** connection paths (horizontal + vertical segments only) so links match
+the topology skill’s default routing — `animateMotion` + `<mpath>` follow polylines and
+`rotate="auto"` turns the dot at each 90° corner.
+
 ```svg
-<!-- 1. Define the connection path with an ID -->
+<!-- 1. Define the connection path with an ID (orthogonal / Manhattan example) -->
 <path id="conn-web-db"
-      d="M 340,180 C 380,160 420,200 460,220"
+      d="M 340 398 L 340 360 L 520 360 L 520 280"
       fill="none" stroke="#F5A623" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round"
       marker-end="url(#arrow-gold)"/>
 
 <!-- 2. Add animated signal dot that follows the path -->
@@ -49,6 +54,9 @@ The primary animation is a **small dot/packet that travels along a `<path>`** us
   </animateMotion>
 </circle>
 ```
+
+Curved Bézier paths still work with `<mpath>`; use them only when the diagram intentionally
+uses non-orthogonal links.
 
 ### Signal Types by Connection Color
 
@@ -94,10 +102,12 @@ Use different colors per node role:
 ## Animation 3: Dashed Line March ("Marching Ants")
 
 Alternative to dot pulses — the dashed stroke offset scrolls, creating a flowing line effect.
-Works well for secondary/passive connections.
+Works well for secondary/passive connections. Apply to **orthogonal** paths the same way:
+use a polyline (`M` + several `L` commands); `stroke-dashoffset` animates along the full
+perimeter of the path.
 
 ```svg
-<path d="M x1,y1 L x2,y2"
+<path d="M 200 300 L 400 300 L 400 180"
       fill="none" stroke="#4A9EFF" stroke-width="1.5"
       stroke-dasharray="8,6" opacity="0.7">
   <animate attributeName="stroke-dashoffset"
@@ -236,7 +246,7 @@ Animations must be placed in this order to avoid z-index issues:
     </circle>
   </g>
 
-  <!-- Layer 3: Node tiles + icons + labels (static, on top) -->
+  <!-- Layer 3: Node tiles + icons + label plates + labels (static, on top) -->
   <g id="nodes">...</g>
 
   <!-- Layer 4: Node animations (glows, LEDs — inside each node g) -->
@@ -246,6 +256,16 @@ Animations must be placed in this order to avoid z-index issues:
   <!-- Layer 5: Legend + Title -->
 </svg>
 ```
+
+---
+
+## Labels vs signal dots (legibility)
+
+Animated dots travel **above** connection strokes but **below** the full `#nodes` group. Node
+labels must include an **opaque label plate** (`<rect>` behind `<text>`, per svg-topology
+skill) so packets do not read as crossing through typography. Without a plate, dots remain
+correctly under the text glyph but strokes still show through transparent pixels — the plate
+fixes both strokes and motion.
 
 ---
 
@@ -283,7 +303,7 @@ When the SVG is embedded in an HTML artifact, CSS keyframes can be used instead:
   width: 8px; height: 8px;
   border-radius: 50%;
   background: #F5A623;
-  offset-path: path('M 200,150 C 280,130 320,190 400,200');
+  offset-path: path('M 200 300 L 400 300 L 400 180');
   animation: signal-travel 2s linear infinite;
 }
 .signal.delay-1 { animation-delay: 1s; }
@@ -299,9 +319,13 @@ Use CSS approach when:
 ## Quality Checklist for Animated Diagrams
 
 - [ ] All `<animateMotion>` elements use `<mpath>` referencing a named path `id`
+- [ ] Underlying connection paths use **orthogonal** (`M` + `L`) routing when matching the
+      svg-topology skill unless the design intentionally uses curves
 - [ ] Signal dot color matches its parent connection line color
 - [ ] Multiple pulses per line are offset (not simultaneous)
 - [ ] Animated elements are between connection layer and node layer
+- [ ] Node labels use **label plates** so signals and link strokes never obscure readable text
+      (see svg-topology “Label styling and legibility”)
 - [ ] Node glows use `fill` not `stroke` (fill animates cleaner)
 - [ ] LED blinks use `opacity` animation (not visibility)
 - [ ] Total animations ≤ 20 (beyond this, browsers may stutter)
