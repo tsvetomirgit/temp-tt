@@ -13,3 +13,9 @@ There are a couple of known bugs in this marketplace right now: some users repor
   cp -r ~/skills-src/skills/pptx ~/.claude/skills/pptx
 
 If you want something more actively maintained/polished specifically for HTML→PPTX conversion (closer to what I did with your deck), there's also a community skill called pptx-builder (github.com/Julien339/pptx-builder-skill) built specifically to turn HTML slide designs into pixel-accurate, fully-editable native PowerPoint shapes — worth a look if you're doing this kind of conversion often.
+
+https://github.com/Julien339/pptx-builder-skill
+
+https://github.com/Julien339/docx-builder-skill
+
+https://github.com/Julien339/pdf-builder-skill
