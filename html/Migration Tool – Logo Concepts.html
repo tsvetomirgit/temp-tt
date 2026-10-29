@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Migration Tool – Logo Concepts</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#f4f6fa; --card:#fff; --line:#dfe4ee; --navy:#11204a; --muted:#68728a; --ghost:#9aa5bd;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#0b1122; --card:#131b33; --line:#25304f; --navy:#eef2ff; --muted:#a3aec9; --ghost:#6c7897; }
+}
+:root[data-theme="dark"]{ --bg:#0b1122; --card:#131b33; --line:#25304f; --navy:#eef2ff; --muted:#a3aec9; --ghost:#6c7897; }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--navy);font-family:"Montserrat",system-ui,sans-serif;padding:32px 20px 48px}
+header{max-width:1000px;margin:0 auto 28px}
+h1{margin:0 0 8px;font-size:clamp(24px,4vw,34px);font-weight:700}
+header p{margin:0;color:var(--muted);line-height:1.5;max-width:60ch}
+.grid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 22px 24px;display:flex;flex-direction:column}
+.mark{display:block;width:100%;max-width:230px;height:auto;margin:6px auto 0}
+.word{text-align:center;font-weight:700;font-size:24px;letter-spacing:-.01em;margin:6px 0 18px}
+h2{margin:0 0 6px;font-size:16px;font-weight:700}
+.card p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.hid{position:absolute;width:0;height:0}
+
+/* motion */
+.chev{animation:go 2.4s ease-in-out infinite}
+.chev:nth-of-type(2){animation-delay:.2s}.chev:nth-of-type(3){animation-delay:.4s}
+@keyframes go{0%,60%,100%{transform:translate(0,0)}30%{transform:translate(6px,-5px)}}
+.slab{animation:slide 3s ease-in-out infinite}
+@keyframes slide{0%,25%,100%{transform:translate(0,0)}55%,75%{transform:translate(26px,-8px)}}
+.hop{animation:blink 1.8s ease-in-out infinite}
+.hop:nth-of-type(2){animation-delay:.25s}.hop:nth-of-type(3){animation-delay:.5s}
+@keyframes blink{0%,100%{opacity:.2}40%{opacity:1}}
+@media (prefers-reduced-motion: reduce){.chev,.slab,.hop{animation:none}}
+</style>
+</head>
+<body>
+<svg class="hid" aria-hidden="true">
+  <defs>
+    <linearGradient id="gBP" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2d6bff"/><stop offset="1" stop-color="#7a5cf0"/></linearGradient>
+    <linearGradient id="gBT" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2d6bff"/><stop offset="1" stop-color="#22c7b8"/></linearGradient>
+    <path id="cloud" d="M25,100 C-5,100 -5,60 25,56 C22,20 62,8 82,28 C95,-2 145,6 150,48 C175,52 172,100 145,100 Z"/>
+    <g id="net"><g stroke-width="2"><path d="M-14,-12 L12,-18 L16,10 L-10,16 Z M-14,-12 L16,10 M12,-18 L-10,16" fill="none"/></g><circle cx="-14" cy="-12" r="5"/><circle cx="12" cy="-18" r="5"/><circle cx="16" cy="10" r="5"/><circle cx="-10" cy="16" r="5"/></g>
+    <g id="cube"><polygon points="0,-13 11,-6.5 0,0 -11,-6.5" fill="#7fe6dc"/><polygon points="-11,-6.5 0,0 0,13 -11,6.5" fill="#2d6bff"/><polygon points="11,-6.5 0,0 0,13 11,6.5" fill="#1c44c9"/></g>
+  </defs>
+</svg>
+
+<header>
+  <h1>Migration Tool – logo concepts</h1>
+  <p>Five directions for software that moves VMs, networks, edge gateways and the rest of a cloud estate from one place to another. Each one is built around a different idea of what “migration” looks like.</p>
+</header>
+
+<main class="grid">
+
+<section class="card">
+  <svg class="mark" viewBox="0 0 220 140" role="img" aria-label="Cloud with a flock of three chevrons flying away">
+    <use href="#cloud" fill="url(#gBP)" transform="translate(8,42) scale(.62)"/>
+    <g fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+      <path class="chev" d="M124,67 L134,76 L124,85" stroke="#7a5cf0"/>
+      <path class="chev" d="M153,50 L162,58 L153,66" stroke="#2d6bff" stroke-width="6"/>
+      <path class="chev" d="M180,33 L188,40 L180,47" stroke="#22c7b8" stroke-width="5"/>
+    </g>
+  </svg>
+  <div class="word">Migration Tool</div>
+  <h2>1. Flock</h2>
+  <p>Migratory birds as chevrons, each a different workload leaving the cloud: a VM, a network, a gateway. Reads as movement and direction without a literal arrow.</p>
+</section>
+
+<section class="card">
+  <svg class="mark" viewBox="0 0 220 140" role="img" aria-label="Three stacked infrastructure layers with the top layer sliding sideways">
+    <path d="M40,44 L110,24 L180,44 L110,64 Z" fill="none" stroke="var(--ghost)" stroke-width="2" stroke-dasharray="4 5"/>
+    <path d="M40,100 L110,80 L180,100 L110,120 Z" fill="#22c7b8"/>
+    <path d="M40,72 L110,52 L180,72 L110,92 Z" fill="#2d6bff"/>
+    <path class="slab" d="M40,44 L110,24 L180,44 L110,64 Z" fill="#7a5cf0"/>
+  </svg>
+  <div class="word">Migration Tool</div>
+  <h2>2. Layers in transit</h2>
+  <p>A stack of infrastructure layers (compute, network, edge) with the top one lifted off and sliding to its new home. Works well as a favicon and in a dense UI.</p>
+</section>
+
+<section class="card">
+  <svg class="mark" viewBox="0 0 220 140" role="img" aria-label="A cube hopping along an arc from a dashed cloud to a solid cloud">
+    <use href="#cloud" fill="none" stroke="var(--ghost)" stroke-width="3" stroke-dasharray="5 5" transform="translate(6,72) scale(.5)"/>
+    <use href="#cloud" fill="url(#gBT)" transform="translate(130,72) scale(.5)"/>
+    <path d="M52,66 Q111,-14 172,66" fill="none" stroke="var(--ghost)" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/>
+    <use href="#cube">
+      <animateMotion dur="3s" repeatCount="indefinite" path="M52,60 Q111,-20 172,60" calcMode="spline" keyTimes="0;1" keySplines=".45 0 .25 1"/>
+    </use>
+  </svg>
+  <div class="word">Migration Tool</div>
+  <h2>3. Cube hop</h2>
+  <p>A workload cube leaves a ghosted source cloud and lands in a solid destination cloud. The most literal option: the story of the product is clear in one second.</p>
+</section>
+
+<section class="card">
+  <svg class="mark" viewBox="0 0 220 140" role="img" aria-label="Lowercase m made of two cloud humps with a dot travelling over it">
+    <defs><linearGradient id="gM" gradientUnits="userSpaceOnUse" x1="50" y1="0" x2="138" y2="0"><stop offset="0" stop-color="#2d6bff"/><stop offset="1" stop-color="#22c7b8"/></linearGradient></defs>
+    <g transform="translate(16,-2)" fill="none" stroke="url(#gM)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M50,114 V78 a22,22 0 0 1 44,0 a22,22 0 0 1 44,0 V114"/>
+      <path d="M94,78 V114"/>
+    </g>
+    <circle r="7" fill="#fff" stroke="#7a5cf0" stroke-width="4">
+      <animateMotion dur="3.2s" repeatCount="indefinite" path="M66,112 V76 a22,22 0 0 1 44,0 a22,22 0 0 1 44,0 V112" calcMode="linear"/>
+    </circle>
+  </svg>
+  <div class="word">Migration Tool</div>
+  <h2>4. Cloud m</h2>
+  <p>A monogram: the two humps of the letter m double as the lobes of a cloud, with a data point travelling over them. Compact and ownable, and easy to put on a dark button or app icon.</p>
+</section>
+
+<section class="card">
+  <svg class="mark" viewBox="0 0 220 140" role="img" aria-label="A hollow dashed network on the left handing off to a filled network on the right">
+    <circle cx="52" cy="70" r="38" fill="none" stroke="var(--ghost)" stroke-width="2.5" stroke-dasharray="5 5"/>
+    <use href="#net" transform="translate(52,70)" fill="none" stroke="var(--ghost)"/>
+    <circle cx="168" cy="70" r="38" fill="none" stroke="#22c7b8" stroke-width="3"/>
+    <use href="#net" transform="translate(168,70)" fill="#22c7b8" stroke="#22c7b8"/>
+    <g fill="none" stroke="#2d6bff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+      <path class="hop" d="M98,58 L108,70 L98,82"/>
+      <path class="hop" d="M108,58 L118,70 L108,82"/>
+      <path class="hop" d="M118,58 L128,70 L118,82"/>
+    </g>
+  </svg>
+  <div class="word">Migration Tool</div>
+  <h2>5. Node handoff</h2>
+  <p>A network graph moving from a hollow dashed circle to a filled one. Speaks to networks, gateways and topology rather than just VMs, and suits a technical, infrastructure-first brand.</p>
+</section>
+
+</main>
+<script>
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.querySelectorAll('svg').forEach(function(s){ if(s.pauseAnimations) s.pauseAnimations(); });
+}
+</script>
+</body>
+</html>
